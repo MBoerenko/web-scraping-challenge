@@ -8,7 +8,9 @@ import pymongo
 #from urllib.request import urlopen
 import re
 
-def init_browser():
+mars_data={}
+
+def browser_init():
     #Windows Users / Open Chromedriver
     executable_path = {'executable_path': 'chromedriver.exe'}
     browser = Browser('chrome', **executable_path, headless=False)
@@ -62,10 +64,11 @@ def init_browser():
     # MARS FACTS
 
     dfs=pd.read_html('https://space-facts.com/mars/')
-    dfs[0].columns=['Description', 'Value']
-    dfs[0]
+    table=dfs[0]
+    table.columns=['Description', 'Value']
+    table.set_index('Description')
 
-    mars_html = dfs[0].to_html()
+    mars_html = table.to_html()
     print(mars_html)
 
     # MARS HEMISPHERES
@@ -105,7 +108,7 @@ def init_browser():
         "news_title": news_title,
         "news_description": news_description,
         "featured_url": featured_url,
-        "mars_facts": dfs,
+        "mars_facts": mars_html,
         "hemisphere_images": hemisphere_image_urls
     }
 
@@ -114,4 +117,3 @@ def init_browser():
 
     # Return results
     return mars_data
-
