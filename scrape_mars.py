@@ -3,6 +3,7 @@ from splinter.exceptions import ElementDoesNotExist
 from bs4 import BeautifulSoup
 import pandas as pd
 import pymongo
+import time
 #import lxml.html as lh
 #import urllib.request
 #from urllib.request import urlopen
@@ -19,8 +20,11 @@ def browser_init():
 
     # Mars news URL of page to be scraped
     news_url = 'https://mars.nasa.gov/news/'
-    browser.visit(news_url)
 
+    browser.visit(news_url)
+    
+    time.sleep(5)
+    
     #Create beautifulsoup object
     html = browser.html
     news_soup = BeautifulSoup(html, 'html.parser')
@@ -39,6 +43,8 @@ def browser_init():
     images_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
 
     browser.visit(images_url)
+    
+    time.sleep(5)
 
     #Create beautiful soup object
     image_html = browser.html
@@ -64,17 +70,22 @@ def browser_init():
     # MARS FACTS
 
     dfs=pd.read_html('https://space-facts.com/mars/')
+   
+    time.sleep(5)
+
     table=dfs[0]
     table.columns=['Description', 'Value']
     table.set_index('Description')
 
-    mars_html = table.to_html()
+    mars_html = table.to_html(index=False)
     print(mars_html)
 
     # MARS HEMISPHERES
 
     hemisphere_url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
     browser.visit(hemisphere_url)
+    
+    time.sleep(5)
 
     hemisphere_html = browser.html
     hemisphere_soup = BeautifulSoup(hemisphere_html, 'html.parser')
